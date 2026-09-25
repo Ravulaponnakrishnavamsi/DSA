@@ -1,86 +1,55 @@
 class Solution {
-
-    public int[] maxmin(int[] bloomDay)
+    public boolean ispossible(int []arr,int m,int k,int d)
     {
-         int max=Integer.MIN_VALUE;
-        int min=Integer.MAX_VALUE;
-
-        for(int i=0;i<bloomDay.length;i++)
+        int took=0;
+        for(int i = 0;i<arr.length;i++)
         {
-            if(bloomDay[i]>max)
+            if(arr[i]<=d)
             {
-                max=bloomDay[i];
+                took++;
+            }
+            else{
                 
+                took=0;
             }
-            if(bloomDay[i]<min)
+            if(took==k)
             {
-                min=bloomDay[i];
+                m-=1;
+                took=0;
+            }
+
+        
+            if(m==0)
+            {
+                return true;
             }
         }
-        return new int[]{max,min};
+        
+        return false;
     }
-
-    public int minDays(int[] bloomDay, int m, int k) 
-    {
-        if((long)m * k > bloomDay.length)
-        {
-                return -1;
+    public int minDays(int[] bloomDay, int m, int k) {
+        if ((long) m * k > bloomDay.length) {
+            return -1;
         }
-        int max[]=maxmin(bloomDay);
-        int low=max[1];
-        int high=max[0];
-        int ans=high;
+
+        int low=1;
+        int high=(int)Math.pow(10,9);
+        int ans=0;
+        
         while(low<=high)
         {
-            int mid=low+(high-low)/2;
+            int mid = low+(high-low)/2;
 
-            
-            boolean value=ispossible(bloomDay,m,k,mid);
-
-            if(value)
+            if(ispossible(bloomDay,m,k,mid))
             {
-                ans=mid;
-                high=mid-1;
+                ans = mid;
+                high = mid-1;
             }
             else{
-                low=mid+1;
+                low = mid+1;
             }
-
-
-            
         }
+        
         return ans;
-       
     }
-    public boolean ispossible(int []bloomDay,int m,int k,int d)
-    {
-
-
-        int took1=0;
-        int cnt1=0;
-
-        for(int i=0;i<bloomDay.length;i++)
-        {
-            if(bloomDay[i]<=d)
-            {
-                cnt1++;
-            }
-            else{
-                took1+=cnt1/k;
-                cnt1=0;
-            }
-        }
-        took1+=cnt1/k;
-
-       if(took1>=m)
-       {
-        return true;
-       }
-       return false;
-
-
-    }
-
-    
-
 }
